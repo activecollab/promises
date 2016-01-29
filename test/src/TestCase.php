@@ -12,7 +12,6 @@
 namespace ActiveCollab\Promises\Test;
 
 use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
-use ActiveCollab\DateValue\DateValue;
 use ActiveCollab\Promises\PromisesInterface;
 use Carbon\Carbon;
 

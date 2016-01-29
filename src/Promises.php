@@ -81,15 +81,16 @@ class Promises implements PromisesInterface
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $characters_length = strlen($characters);
         $result = '';
-        for ($i = 0; $i < 64; $i++) {
+        for ($i = 0; $i < 64; ++$i) {
             $result .= $characters[rand(0, $characters_length - 1)];
         }
+
         return $result;
     }
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function fulfill(PromiseInterface $promise)
     {
@@ -102,7 +103,7 @@ class Promises implements PromisesInterface
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function reject(PromiseInterface $promise)
     {
@@ -115,7 +116,7 @@ class Promises implements PromisesInterface
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function isFulfilled(PromiseInterface $promise)
     {
@@ -124,7 +125,7 @@ class Promises implements PromisesInterface
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function isRejected(PromiseInterface $promise)
     {
@@ -133,7 +134,7 @@ class Promises implements PromisesInterface
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function isSettled(PromiseInterface $promise)
     {
