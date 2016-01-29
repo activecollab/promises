@@ -50,3 +50,11 @@ $promises->isFulfilled($promise); // false
 $promises->isRejected($promise);  // true
 $promises->isSettled($promise);   // true
 ```
+
+## Running tests
+
+To run tests, `cd` to this directory and run:
+
+```bash
+phpunit -c test
+```
