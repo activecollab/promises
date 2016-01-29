@@ -9,11 +9,11 @@
  * with this source code in the file LICENSE.
  */
 
-namespace ActiveCollab\Promises;
+namespace ActiveCollab\Promises\Promise;
 
 /**
- * @package ActiveCollab\Promises
+ * @package ActiveCollab\Promises\Promise
  */
-class Dispatcher implements DispatcherInterface
+interface PromiseInterface
 {
 }
