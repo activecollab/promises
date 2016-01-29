@@ -12,7 +12,9 @@
 namespace ActiveCollab\Promises;
 
 use ActiveCollab\DatabaseConnection\ConnectionInterface;
+use ActiveCollab\Promises\Promise\Promise;
 use ActiveCollab\Promises\Promise\PromiseInterface;
+use Carbon\Carbon;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -20,8 +22,6 @@ use Psr\Log\LoggerInterface;
  */
 class Promises implements PromisesInterface
 {
-    const PROMISES_TABLE_NAME = 'promises';
-
     /**
      * @var ConnectionInterface
      */
@@ -43,13 +43,19 @@ class Promises implements PromisesInterface
         $this->log = $log;
 
         if ($create_tables_if_missing && !$this->connection->tableExists(self::PROMISES_TABLE_NAME)) {
+            if ($this->log) {
+                $this->log->info('Creating {table_name} table', ['table_name' => self::PROMISES_TABLE_NAME]);
+            }
+
             $this->connection->execute('CREATE TABLE IF NOT EXISTS `' . self::PROMISES_TABLE_NAME . "` (
                 `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                `name` varchar(191) NOT NULL DEFAULT '',
-                `jobs_count` int(10) unsigned NOT NULL DEFAULT '0',
+                `signature` varchar(191) NOT NULL DEFAULT '',
                 `created_at` datetime DEFAULT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+                `settlement` enum(?, ?) DEFAULT NULL,
+                `settled_at` datetime DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                UNIQUE (`signature`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;", PromiseInterface::FULFILLED, PromiseInterface::REJECTED);
         }
     }
 
@@ -58,6 +64,27 @@ class Promises implements PromisesInterface
      */
     public function create()
     {
+        do {
+            $signature = $this->createSignature();
+        } while ($this->connection->count(self::PROMISES_TABLE_NAME, ['`signature` = ?', $signature]));
+
+        $this->connection->execute('INSERT INTO ' . self::PROMISES_TABLE_NAME . ' (signature, created_at) VALUES (?, ?)', $signature, (new Carbon())->format('Y-m-d H:i:s'));
+
+        return new Promise($signature);
+    }
+
+    /**
+     * @return string
+     */
+    private function createSignature()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters_length = strlen($characters);
+        $result = '';
+        for ($i = 0; $i < 64; $i++) {
+            $result .= $characters[rand(0, $characters_length - 1)];
+        }
+        return $result;
     }
 
     /**
@@ -66,6 +93,11 @@ class Promises implements PromisesInterface
      */
     public function fulfill(PromiseInterface $promise)
     {
+        if ($this->isSettled($promise)) {
+            throw new \LogicException("Settled promises can't be fulfilled");
+        }
+
+        $this->connection->execute('UPDATE ' . self::PROMISES_TABLE_NAME . ' SET `settlement` = ?, `settled_at` = UTC_TIMESTAMP() WHERE `signature` = ?', PromiseInterface::FULFILLED, $promise->getSignature());
     }
 
     /**
@@ -74,6 +106,11 @@ class Promises implements PromisesInterface
      */
     public function reject(PromiseInterface $promise)
     {
+        if ($this->isSettled($promise)) {
+            throw new \LogicException("Settled promises can't be rejected");
+        }
+
+        $this->connection->execute('UPDATE ' . self::PROMISES_TABLE_NAME . ' SET `settlement` = ?, `settled_at` = UTC_TIMESTAMP() WHERE `signature` = ?', PromiseInterface::REJECTED, $promise->getSignature());
     }
 
     /**
@@ -82,6 +119,7 @@ class Promises implements PromisesInterface
      */
     public function isFulfilled(PromiseInterface $promise)
     {
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `settlement` = ? AND `settled_at` IS NOT NULL', PromiseInterface::FULFILLED);
     }
 
     /**
@@ -90,6 +128,7 @@ class Promises implements PromisesInterface
      */
     public function isRejected(PromiseInterface $promise)
     {
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `settlement` = ? AND `settled_at` IS NOT NULL', PromiseInterface::REJECTED);
     }
 
     /**
@@ -98,5 +137,6 @@ class Promises implements PromisesInterface
      */
     public function isSettled(PromiseInterface $promise)
     {
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `settlement` IS NOT NULL AND `settled_at` IS NOT NULL');
     }
 }

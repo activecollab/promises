@@ -16,4 +16,13 @@ namespace ActiveCollab\Promises\Promise;
  */
 interface PromiseInterface
 {
+    const FULFILLED = 'fulfilled';
+    const REJECTED = 'rejected';
+
+    /**
+     * Return promise signature. This signature is unique to all all promises given by the application components.
+     *
+     * @return string
+     */
+    public function getSignature();
 }

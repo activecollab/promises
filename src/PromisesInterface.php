@@ -10,6 +10,7 @@
  */
 
 namespace ActiveCollab\Promises;
+
 use ActiveCollab\Promises\Promise\PromiseInterface;
 
 /**
@@ -17,6 +18,8 @@ use ActiveCollab\Promises\Promise\PromiseInterface;
  */
 interface PromisesInterface
 {
+    const PROMISES_TABLE_NAME = 'promises';
+
     /**
      * @return PromiseInterface
      */
@@ -24,31 +27,31 @@ interface PromisesInterface
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function fulfill(PromiseInterface $promise);
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function reject(PromiseInterface $promise);
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function isFulfilled(PromiseInterface $promise);
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function isRejected(PromiseInterface $promise);
 
     /**
      * @param  PromiseInterface $promise
-     * @return boolean
+     * @return bool
      */
     public function isSettled(PromiseInterface $promise);
 }
