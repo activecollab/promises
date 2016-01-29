@@ -1,0 +1,36 @@
+{
+    "name": "activecollab/promises",
+    "type": "library",
+    "description": "Server side promises",
+    "license": "MIT",
+    "prefer-stable": true,
+    "keywords": [
+        "promise",
+        "promise",
+        "activecollab"
+    ],
+    "homepage": "https://labs.activecollab.com",
+    "authors": [
+        {
+            "name": "Ilija Studen",
+            "email": "ilija.studen@activecollab.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "activecollab/databaseconnection": "dev-next",
+        "psr/log": "~1.0"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "~1.0",
+        "monolog/monolog": "~1.0",
+        "phpunit/phpunit": "~5.0"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "ActiveCollab\\Promises\\": "src",
+            "ActiveCollab\\Promises\\Test\\": "test/src"
+        }
+    }
+}
