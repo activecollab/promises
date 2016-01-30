@@ -29,6 +29,12 @@ interface PromisesInterface
      * @param  PromiseInterface $promise
      * @return bool
      */
+    public function exists(PromiseInterface $promise);
+
+    /**
+     * @param  PromiseInterface $promise
+     * @return bool
+     */
     public function fulfill(PromiseInterface $promise);
 
     /**

@@ -97,6 +97,15 @@ class Promises implements PromisesInterface
      * @param  PromiseInterface $promise
      * @return bool
      */
+    public function exists(PromiseInterface $promise)
+    {
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `signature` = ?', $promise->getSignature());
+    }
+
+    /**
+     * @param  PromiseInterface $promise
+     * @return bool
+     */
     public function fulfill(PromiseInterface $promise)
     {
         if ($this->isSettled($promise)) {
@@ -149,7 +158,7 @@ class Promises implements PromisesInterface
      */
     public function isFulfilled(PromiseInterface $promise)
     {
-        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `settlement` = ? AND `settled_at` IS NOT NULL', PromiseInterface::FULFILLED);
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `signature` = ? AND `settlement` = ? AND `settled_at` IS NOT NULL', $promise->getSignature(), PromiseInterface::FULFILLED);
     }
 
     /**
@@ -158,7 +167,7 @@ class Promises implements PromisesInterface
      */
     public function isRejected(PromiseInterface $promise)
     {
-        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `settlement` = ? AND `settled_at` IS NOT NULL', PromiseInterface::REJECTED);
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `signature` = ? AND `settlement` = ? AND `settled_at` IS NOT NULL', $promise->getSignature(), PromiseInterface::REJECTED);
     }
 
     /**
@@ -167,6 +176,6 @@ class Promises implements PromisesInterface
      */
     public function isSettled(PromiseInterface $promise)
     {
-        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `settlement` IS NOT NULL AND `settled_at` IS NOT NULL');
+        return (boolean) $this->connection->executeFirstCell('SELECT COUNT(`id`) AS "row_count" FROM ' . self::PROMISES_TABLE_NAME . ' WHERE `signature` = ? AND `settlement` IS NOT NULL AND `settled_at` IS NOT NULL', $promise->getSignature());
     }
 }

@@ -56,7 +56,20 @@ class PromisesTest extends TestCase
     }
 
     /**
-     * Test project fulfillement call.
+     * If if promise with the given signature exists.
+     */
+    public function testExists()
+    {
+        $promises = new Promises($this->connection);
+
+        $promise = $promises->create();
+
+        $this->assertTrue($promises->exists($promise));
+        $this->assertFalse($promises->exists(new Promise('not found')));
+    }
+
+    /**
+     * Test promise fulfillement call.
      */
     public function testFulfill()
     {
