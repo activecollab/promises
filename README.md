@@ -1,5 +1,7 @@
 # Promises Library
 
+[![Build Status](https://travis-ci.org/activecollab/promises.svg?branch=master)](https://travis-ci.org/activecollab/promises)
+
 Purpose of this library is to provide persisted server side promises. We built it to power our multi-service system, where one service issues a job requests and expect that antoher service executes it (and fulfulls or rejects a promise that it gives when it accepts a job).
 
 Example:
