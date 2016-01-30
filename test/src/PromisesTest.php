@@ -11,6 +11,7 @@
 
 namespace ActiveCollab\Promises\Test;
 
+use ActiveCollab\Promises\Promise\Promise;
 use ActiveCollab\Promises\Promise\PromiseInterface;
 use ActiveCollab\Promises\Promises;
 use ActiveCollab\Promises\PromisesInterface;
@@ -54,6 +55,9 @@ class PromisesTest extends TestCase
         $this->assertNotEmpty($promise->getSignature());
     }
 
+    /**
+     * Test project fulfillement call.
+     */
     public function testFulfill()
     {
         $promises = new Promises($this->connection);
@@ -68,6 +72,18 @@ class PromisesTest extends TestCase
         $this->assertTrue($promises->isSettled($promise));
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Promise 'not found' not found
+     */
+    public function testFulfillExceptionWhenPromiseCantBeFound()
+    {
+        (new Promises($this->connection))->fulfill(new Promise('not found'));
+    }
+
+    /**
+     * Test reject promise call.
+     */
     public function testReject()
     {
         $promises = new Promises($this->connection);
@@ -80,6 +96,15 @@ class PromisesTest extends TestCase
         $this->assertFalse($promises->isFulfilled($promise));
         $this->assertTrue($promises->isRejected($promise));
         $this->assertTrue($promises->isSettled($promise));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Promise 'not found' not found
+     */
+    public function testRejectExceptionWhenPromiseCantBeFound()
+    {
+        (new Promises($this->connection))->reject(new Promise('not found'));
     }
 
     /**

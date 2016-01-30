@@ -15,6 +15,7 @@ use ActiveCollab\DatabaseConnection\ConnectionInterface;
 use ActiveCollab\Promises\Promise\Promise;
 use ActiveCollab\Promises\Promise\PromiseInterface;
 use Carbon\Carbon;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -70,6 +71,10 @@ class Promises implements PromisesInterface
 
         $this->connection->execute('INSERT INTO ' . self::PROMISES_TABLE_NAME . ' (signature, created_at) VALUES (?, ?)', $signature, (new Carbon())->format('Y-m-d H:i:s'));
 
+        if ($this->log) {
+            $this->log->info('Promise {promise_id} created', ['promise_id' => $signature]);
+        }
+
         return new Promise($signature);
     }
 
@@ -99,6 +104,18 @@ class Promises implements PromisesInterface
         }
 
         $this->connection->execute('UPDATE ' . self::PROMISES_TABLE_NAME . ' SET `settlement` = ?, `settled_at` = UTC_TIMESTAMP() WHERE `signature` = ?', PromiseInterface::FULFILLED, $promise->getSignature());
+
+        if ($this->connection->affectedRows()) {
+            if ($this->log) {
+                $this->log->info('Promise {promise_id} fulfilled', ['promise_id' => $promise->getSignature()]);
+            }
+        } else {
+            if ($this->log) {
+                $this->log->error('Promise {promise_id} not found', ['promise_id' => $promise->getSignature()]);
+            }
+
+            throw new InvalidArgumentException("Promise '{$promise->getSignature()}' not found");
+        }
     }
 
     /**
@@ -112,6 +129,18 @@ class Promises implements PromisesInterface
         }
 
         $this->connection->execute('UPDATE ' . self::PROMISES_TABLE_NAME . ' SET `settlement` = ?, `settled_at` = UTC_TIMESTAMP() WHERE `signature` = ?', PromiseInterface::REJECTED, $promise->getSignature());
+
+        if ($this->connection->affectedRows()) {
+            if ($this->log) {
+                $this->log->info('Promise {promise_id} rejected', ['promise_id' => $promise->getSignature()]);
+            }
+        } else {
+            if ($this->log) {
+                $this->log->error('Promise {promise_id} not found', ['promise_id' => $promise->getSignature()]);
+            }
+
+            throw new InvalidArgumentException("Promise '{$promise->getSignature()}' not found");
+        }
     }
 
     /**
