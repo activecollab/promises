@@ -36,7 +36,7 @@ $promises->isSettled($promise);   // false
 $promise = $promises->create();
 
 $promises->fulfill($promise);
-s
+
 $promises->isFulfilled($promise); // true
 $promises->isRejected($promise);  // false
 $promises->isSettled($promise);   // true
