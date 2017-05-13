@@ -8,4 +8,4 @@ mysql:
 install: composer install --dev
 before_script:
   - mysql -e 'create database if not exists activecollab_promises_test;'
-script: phpunit
+script: vendor/bin/phpunit
