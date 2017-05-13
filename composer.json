@@ -3,7 +3,8 @@
     "type": "library",
     "description": "Server side promises",
     "license": "MIT",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "keywords": [
         "promise",
         "promise",
@@ -17,13 +18,12 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
-        "activecollab/databaseconnection": "^2.0",
-        "activecollab/datevalue": "^1.0",
+        "php": ">=7.1",
+        "activecollab/databaseconnection": "v3.0.x-dev",
         "psr/log": "~1.0"
     },
     "require-dev": {
-        "fabpot/php-cs-fixer": "~1.0",
+        "friendsofphp/php-cs-fixer": "^2.0",
         "monolog/monolog": "~1.0",
         "phpunit/phpunit": "~5.0"
     },
