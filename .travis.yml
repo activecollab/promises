@@ -1,11 +1,11 @@
 language: php
 php:
-  - 7.1
-mysql:
-  database: activecollab_promises_test
-  username: root
-  encoding: utf8mb4
+    - 7.1
+services:
+    - mysql
+before_install:
+    - composer self-update
 install: composer install --dev
 before_script:
-  - mysql -e 'create database if not exists activecollab_promises_test;'
-script: vendor/bin/phpunit
+    - mysql -u root -e 'create database activecollab_promises_test'
+script: php vendor/bin/phpunit
