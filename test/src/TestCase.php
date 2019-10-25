@@ -14,11 +14,12 @@ namespace ActiveCollab\Promises\Test;
 use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
 use ActiveCollab\Promises\PromisesInterface;
 use Carbon\Carbon;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 /**
  * @package ActiveCollab\Promises\Test
  */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends PHPUnitTestCase
 {
     /**
      * @var \mysqli
