@@ -14,11 +14,9 @@ namespace ActiveCollab\Promises\Test;
 use ActiveCollab\DatabaseConnection\Connection\MysqliConnection;
 use ActiveCollab\Promises\PromisesInterface;
 use Carbon\Carbon;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-/**
- * @package ActiveCollab\Promises\Test
- */
-abstract class TestCase extends \PHPUnit_Framework_TestCase
+abstract class TestCase extends BaseTestCase
 {
     /**
      * @var \mysqli
@@ -35,10 +33,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $now;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -55,10 +50,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         Carbon::setTestNow($this->now);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function tearDown()
+    public function tearDown(): void
     {
         Carbon::setTestNow(null);
 

@@ -15,10 +15,9 @@ use ActiveCollab\Promises\Promise\Promise;
 use ActiveCollab\Promises\Promise\PromiseInterface;
 use ActiveCollab\Promises\Promises;
 use ActiveCollab\Promises\PromisesInterface;
+use InvalidArgumentException;
+use LogicException;
 
-/**
- * @package ActiveCollab\Promises\Test
- */
 class PromisesTest extends TestCase
 {
     /**
@@ -85,12 +84,11 @@ class PromisesTest extends TestCase
         $this->assertTrue($promises->isSettled($promise));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Promise 'not found' not found
-     */
     public function testFulfillExceptionWhenPromiseCantBeFound()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Promise 'not found' not found");
+
         (new Promises($this->connection))->fulfill(new Promise('not found'));
     }
 
@@ -111,21 +109,19 @@ class PromisesTest extends TestCase
         $this->assertTrue($promises->isSettled($promise));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Promise 'not found' not found
-     */
     public function testRejectExceptionWhenPromiseCantBeFound()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Promise 'not found' not found");
+
         (new Promises($this->connection))->reject(new Promise('not found'));
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Settled promises can't be fulfilled
-     */
     public function testSettledPromiseCantBeFulfilled()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("Settled promises can't be fulfilled");
+
         $promises = new Promises($this->connection);
         $promise = $promises->create();
         $promises->fulfill($promise);
@@ -134,12 +130,11 @@ class PromisesTest extends TestCase
         $promises->fulfill($promise);
     }
 
-    /**
-     * @expectedException \LogicException
-     * @expectedExceptionMessage Settled promises can't be rejected
-     */
     public function testSettledPromiseCantBeRejected()
     {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("Settled promises can't be rejected");
+
         $promises = new Promises($this->connection);
         $promise = $promises->create();
         $promises->fulfill($promise);

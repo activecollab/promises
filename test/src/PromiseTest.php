@@ -12,18 +12,15 @@
 namespace ActiveCollab\Promises\Test;
 
 use ActiveCollab\Promises\Promise\Promise;
+use InvalidArgumentException;
 
-/**
- * @package ActiveCollab\Promises\Test
- */
 class PromiseTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Promise signature can't be empty
-     */
     public function testPromiseSignatureIsRequired()
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Promise signature can't be empty");
+
         new Promise('');
     }
 
