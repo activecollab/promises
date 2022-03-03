@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c21dd41c0ea8364ccf2e62036cddfbd",
+    "content-hash": "24f7c1307a56bd2840996dc0655a833b",
     "packages": [
         {
             "name": "activecollab/containeraccess",
@@ -59,16 +59,16 @@
         },
         {
             "name": "activecollab/databaseconnection",
-            "version": "4.0.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/activecollab/databaseconnection.git",
-                "reference": "7192b59cda4022a381ab0b9fe0bdd670f9b083ca"
+                "reference": "85710eaebca7d0396dcb2db425e40b052e1a6956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/7192b59cda4022a381ab0b9fe0bdd670f9b083ca",
-                "reference": "7192b59cda4022a381ab0b9fe0bdd670f9b083ca",
+                "url": "https://api.github.com/repos/activecollab/databaseconnection/zipball/85710eaebca7d0396dcb2db425e40b052e1a6956",
+                "reference": "85710eaebca7d0396dcb2db425e40b052e1a6956",
                 "shasum": ""
             },
             "require": {
@@ -76,13 +76,13 @@
                 "activecollab/datevalue": "^2.0",
                 "ext-json": "*",
                 "ext-mysqli": "*",
-                "php": ">=7.3",
+                "php": ">=8.0",
                 "psr/log": "^1.0.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.0",
-                "phpunit/phpunit": "~5.0",
-                "pimple/pimple": "~3.0.0"
+                "phpunit/phpunit": "~9.0",
+                "pimple/pimple": "~3.5.0"
             },
             "type": "library",
             "autoload": {
@@ -109,9 +109,9 @@
             ],
             "support": {
                 "issues": "https://github.com/activecollab/databaseconnection/issues",
-                "source": "https://github.com/activecollab/databaseconnection/tree/4.0.0"
+                "source": "https://github.com/activecollab/databaseconnection/tree/5.0.0"
             },
-            "time": "2019-12-21T13:48:35+00:00"
+            "time": "2022-03-03T09:01:59+00:00"
         },
         {
             "name": "activecollab/datevalue",
